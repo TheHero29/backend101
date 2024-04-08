@@ -1,6 +1,7 @@
 package dev.loukik.backend.Service;
 
 import dev.loukik.backend.DTO.FakeStoreProductDto;
+import dev.loukik.backend.Exceptions.ProductNotFoundException;
 import dev.loukik.backend.Model.Category;
 import dev.loukik.backend.Model.Product;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,9 @@ public class FakeStoreProductService implements ProductService {
     public Product getProductById(Long id) {
         RestTemplate restTemplate = new RestTemplate();
         FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id,FakeStoreProductDto.class);
-        assert fakeStoreProductDto != null;
+        if(fakeStoreProductDto == null) {
+            throw new ProductNotFoundException(id,"Please pass a valid id");
+        }
         return convertFakeStoreProductDtoToProduct(fakeStoreProductDto);
     }
 
