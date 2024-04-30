@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("fakeStoreProductService")
 public class FakeStoreProductService implements ProductService {
 
     @Override
@@ -42,7 +42,7 @@ public class FakeStoreProductService implements ProductService {
         product.setDescription(fakeStoreProductDto.getDescription());
         product.setImage(fakeStoreProductDto.getImage());
         Category category = new Category();
-        category.setDescription(fakeStoreProductDto.getCategory());
+        category.setTitle(fakeStoreProductDto.getCategory());
         product.setCategory(category);
 
         return product;

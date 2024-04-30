@@ -3,27 +3,40 @@ package dev.loukik.backend.Controller;
 import dev.loukik.backend.Model.Product;
 import dev.loukik.backend.Service.FakeStoreProductService;
 import dev.loukik.backend.Service.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
 @RequestMapping("products")
 public class ProductController {
-    ProductService productService = new FakeStoreProductService();
+    private ProductService productService;
+    public ProductController(@Qualifier("selfProductService")ProductService productService){
+        this.productService = productService;
+    }
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id)
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id)
     {
         //throw new RuntimeException("getting");
-        return productService.getProductById(id);
+        Product product = productService.getProductById(id);
+        ResponseEntity<Product> responseEntity;
+
+        responseEntity = new ResponseEntity<>(product, HttpStatus.OK);
+        return responseEntity;
     }
     @GetMapping("/")
     public List<Product> getAllProducts()
     {
         return productService.getAllProducts();
+    }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<Void> handleSomeException(){
+        return null;
     }
 
 

@@ -1,12 +1,12 @@
 package dev.loukik.backend.Model;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Category {
-    private Long id;
+@Entity
+public class Category extends BaseModel {
     private String title;
-    private String description;
 }
